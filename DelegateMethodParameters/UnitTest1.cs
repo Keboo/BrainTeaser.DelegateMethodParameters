@@ -27,8 +27,7 @@ namespace DelegateMethodParameters
 
         private static Action<T> GetDelegateWithTwoParameters<T>()
         {
-            var param = Expression.Parameter(typeof(T));
-            var lambda = Expression.Lambda(typeof(Action<T>), Expression.Empty(), param);
+            var lambda = Expression.Lambda(typeof(Action<T>), Expression.Empty(), Expression.Parameter(typeof(T)));
             return (Action<T>)lambda.Compile();
         }
 
