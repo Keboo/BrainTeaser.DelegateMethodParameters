@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DelegateMethodParameters
@@ -9,7 +10,7 @@ namespace DelegateMethodParameters
         [TestMethod]
         public void DelegateHasSingleParameter()
         {
-            Assert.IsTrue(HasParameters(GetDelegateWithTwoParameters<object>(), 1));
+            Assert.IsTrue(HasParameters(GetDelegateWithOneParameter<object>(), 1));
         }
 
         [TestMethod]
@@ -21,12 +22,14 @@ namespace DelegateMethodParameters
         #region TO_IMPLEMENT
         private static Action<T> GetDelegateWithOneParameter<T>()
         {
-            return null;
+            return x => { };
         }
 
         private static Action<T> GetDelegateWithTwoParameters<T>()
         {
-            return null;
+            var param = Expression.Parameter(typeof(T));
+            var lambda = Expression.Lambda(typeof(Action<T>), Expression.Empty(), param);
+            return (Action<T>)lambda.Compile();
         }
 
         #endregion TO_IMPLEMENT
